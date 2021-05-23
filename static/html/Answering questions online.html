@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>在线答疑</title>
+    <link rel="stylesheet" type="text/css" href="../css/header.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/AQO.css">
+    <link rel="stylesheet" type="text/css" href="../css/footer.css">
+    <script src="../js/jquery.min.js"></script>
+    <script>
+        function get_question() {
+            let ele = document.getElementById('question_show');
+            ele.innerText = '留言正在加载中，请稍后...';
+            $.ajax({
+                type: 'GET',
+                url: '/api/get_comment/',
+                timeout: 5000,
+                success: function (msg) {
+                    console.log(msg);
+                    if (msg.data.code === '0') {
+                        show_questions(msg.data.msg)
+                    }
+                    else if (msg.data.code === '-1') {
+                        alert('登陆状态无效，请重新登陆');
+                        window.location.href = "/static/html/login.html"
+                    }
+                    else {
+                        alert('内部错误')
+                    }
+                }
+            })
+        }
+
+        function show_questions(data) {
+            console.log(data);
+            let ele = document.getElementById('question_show');
+            ele.innerText = '';
+            for (let i = 0; i < data.length; i++) {
+                let each_q = data[i];
+                // 根据情况显示不同的文字状态
+                let answer_flag = "未解答";
+                let answer_num = 0;
+                if (each_q.answer !== null) {
+                    answer_flag = "已解答";
+                    answer_num = 1;
+                }
+                else {
+                    each_q.answer = ''
+                }
+                // END
+                let content = "<div class=\"wt_y\">\n" +
+                    "                <div class=\"wt_l fl\">\n" +
+                    "                    <div class=\"Q1\"><span>【提问" + (i + 1).toString() + "】</span><span>" + each_q.question + "</span></div>\n" +
+                    "                    <div class=\"wt_t\"><span>【提问时间】</span><span><span>" + each_q.question_time + "</span></div>\n" +
+                    "                    <div class=\"wt_hd\"><span>【老师回答】</span><span>" + each_q.answer + "</span></div>\n" +
+                    "                </div>\n" +
+                    "                <div class=\"wt_r fr\">\n" +
+                    "                    <div class=\"wt_jd\"><span>" + answer_flag +"</span></div>\n" +
+                    "                    <div class=\"wt_sl\"><span>" + answer_num.toString() + "个回答</span></div>\n" +
+                    "                </div>\n" +
+                    "                <div class=\"clear\"></div>\n" +
+                    "            </div>";
+                ele.innerHTML += content
+            }
+        }
+
+        function cookie_err() {
+            window.location.href = ""
+        }
+
+        function submit_comment() {
+            let comment_text = document.getElementById("comment_text").value;
+            $.ajax({
+                type: "POST",
+                url: "/api/submit_comment/",
+                timeout: 5000,
+                data: {
+                    comment_text: comment_text,
+                },
+                success: function (msg) {
+                    console.log(msg);
+                    let ta = document.getElementById("comment_text");
+                    ta.value = "";
+                    if (msg.data.code === '0') {
+                        alert('留言成功');
+                        window.location.reload();
+                    }
+                    else if (msg.data.code === '-1') {
+                        alert('留言失败，您没有权限');
+                        window.location.reload()
+                    }
+                    else {
+                        alert('未知错误');
+                        window.location.reload()
+                    }
+                },
+                error: function (msg) {
+                    alert('网络错误')
+                }
+            })
+        }
+
+
+        $(document).ready(function () {
+            get_question();
+            $("#comment_submit_btn").click(function () {
+                submit_comment()
+            });
+        })
+    </script>
+</head>
+
+<body>
+<div class="header">
+    <header>
+        <div class="im fl">
+            <a href="jvascript:;">
+                <img src="../images/logo.png">
+            </a>
+        </div>
+        <div class="c1 fr">
+            <ul class="list_item">
+                <li><a href="index.html">学习中心</a></li>
+                <li><a href="Answers.html">在线习题</a></li>
+                <li><a href="Questionnaire.html">下载资源</a></li>
+                <li><a href="Answering%20questions%20online.html">在线答疑</a></li>
+                <li><a href="exit_login.html">退出登录</a></li>
+            </ul>
+            </ul>
+        </div>
+    </header>
+</div>
+<div class="content">
+    <div class="banner"><img src="../images/banner.png"></div>
+    <div class="wt_bj">
+        <div class="wt">
+            <div id="question_show"></div>
+            <!-- <div class="wt_y">
+                <div class="wt_l fl">
+                    <div class="Q1"><span>【没有了】</span><span id="Q1_title">title</span></div>
+                    <div class="wt_t"><span id="Q1_time">xxx</span></div>
+                    <div class="wt_hd"><span id="Q1_answer">xxx</span></div>
+                </div>
+                <div class="wt_r fr">
+                    <div class="wt_jd"><span id="Q1_status">未解答</span></div>
+                    <div class="wt_sl"><span>0个回答</span></div>
+                </div>
+                <div class="clear"></div>
+            </div> -->
+            <div class="wt_ac">
+                <p style="text-align: center">留言区域：</p>
+                <div class="ac_wb" style="text-align: center"><textarea rows="10" cols="150" maxlength="50" id="comment_text"></textarea>
+                </div>
+                <div class="ac_bn" style="width: 400px; margin: 20px auto 20px auto;"><input type="submit" value="提交" class="submit" id="comment_submit_btn"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<footer>
+    <div class="footer-top"></div>
+    <div class="footer-bottom">
+        <div class="fj">
+            <p>学号：1551300301&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名：吴金莲</p>
+            <p>Copyright&nbsp;&nbsp;© 桂林电子科技大学信息科技学院信息工程系版权所有</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

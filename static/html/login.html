@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>操作系统的登录页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/login.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/footer.css">
+    <script src="../js/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        function checkName() { //验证账号
+            let val = document.getElementById("iname").value;
+            //使用正则进行格式判断
+            let exp = /^\w{4,10}$/;
+            let p = document.getElementById("name_msg");
+            if (exp.test(val)) { //验证成功
+                p.innerHtml = "格式正确";
+                p.style.color = "#5FEB02";
+            } else {
+                p.innerHTML = "格式错误（4-10位数字符）";
+                p.style.color = "red"
+            }
+        }
+
+        function checkPwd() {
+            console.log('hello')
+        }
+
+        function checkCookie() {
+            $.ajax({
+                type: "GET",
+                url: "/api/check_cookie/",
+                timeout: 5000,
+                success: function (msg) {
+                    console.log(msg);
+                    if (msg.data.code === '0') {
+                        setTimeout("window.location.href=\"/api/login/\";", 2000)
+                    }
+                    else if (msg.data.code === '-1') {
+                        console.log('cookie无效')
+                    }
+                },
+                error: function (msg) {
+                    alert('内部错误')
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            checkCookie();
+            $("#login_btn").click(function () {
+                console.log('hello')
+            })
+        })
+    </script>
+</head>
+
+<body>
+<div class="b1">
+    <header>
+        <a href="#">
+            <img src="../images/logo.png">
+        </a>
+        <div class="c1">欢迎登录</div>
+    </header>
+
+</div>
+<div class="cbj">
+    <div class="container">
+        <form id="loginForm" action="../../api/login/" method="post">
+            <div class="form fr">
+                <h4>操作系统辅助教学系统<a href="register.html">新用户注册</a></h4>
+                <div class="input">
+                    <input name="username" id="iname" onblur="checkName()" type="text" maxlength="11" placeholder="请输入用户名">
+                    <span class="name_icon"></span>
+                </div>
+                <!--提示填写格式错误-->
+                <p id="name_msg"></p>
+                <div class="input">
+                    <input name="password" id="ipwd" type="password" autocomplete="off" maxlength="20" placeholder="请输入密码">
+                    <span class="pwd_icon"></span>
+                </div>
+                <p id="pwd_msg"></p>
+                <!--自动登录行-->
+                <div class="check">
+
+                    <input class="fl" type="checkbox">
+                    <span class="fl">自动登录</span>
+                    <a class="fr" href="#">忘记密码？</a>
+                </div>
+                <!--提交按钮-->
+                <input type="submit" class="submit" value="登录"/>
+            </div>
+        </form>
+    </div>
+</div>
+<footer>
+    <!--<div class="footer-top"></div>-->
+    <div class="footer-bottom">
+        <div class="fj">
+            <p>学号：1551300301&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名：吴金莲</p>
+            <p>Copyright&nbsp;&nbsp;© 桂林电子科技大学信息科技学院信息工程系版权所有</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

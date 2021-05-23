@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* CSS Document */
+body{background-color:#f3f2f2;}
+.content .cz{margin:0px auto;width:1200px;}
+.content .cz .ct{margin-top:40px;color:#33a0b3;}
+.content .cz .ct .form-btn-blue{color:#fff;background-color:#4b95ff;border-color:#4b95ff;}
+.content .cz .ct .form-btn{display:inline-block;padding:5px 24px 6px;margin-bottom:0px;font-size:14px;font-weight:normal;line-height:20px;text-align:center;height:20px;border-radius:4px;border:1px solid transparent;background-image:none;cursor:pointer;}
+.content .cz .cn{background-color:white;margin-top:50px;}
+.content .cz .cn .other-1221-hd{padding:0 22px;line-height:42px;background:#d4f0fd;color:#014c85;font-size:22px;width:1150px;margin:0 auto;margin-bottom:36px;}
+.content .cz .cn .other-1221-hd .s1{margin-left:10px;}
+.content .cz .cn .other-1221-bd .padding-100{padding:0 100px 20px;}
+.content .cz .cn .other-1221-bd .padding-100 .hd{margin-bottom:20px;color:#333;font-weight:bold;}
+.content .cz .cn .other-1221-bd .padding-100 .bd label span{display:block;}
+

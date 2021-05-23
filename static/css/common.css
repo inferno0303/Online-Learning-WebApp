@@ -1,0 +1,12 @@
+@charset "utf-8";
+/* CSS Document */
+/**通用样式**/
+body,h1,h2,h3,h4,h5,h6{margin:0px;padding:0px;font-family:'微软雅黑';letter-spacing: 2px;}
+a{text-decoration: none;}
+a:link {color:#0000FF;}
+a:hover {color:#ff9700;}
+a:active {color:#0000FF;}
+.fl{float:left;}
+.fr{float:right;}
+.clear{clear:both;}
+.other-1221-hd .s1{font-size:16px;}

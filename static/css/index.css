@@ -1,0 +1,19 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+/* 内容 */
+.content{background-image:url(../images/index.png);height:1500px;border:1px solid #e0f0ff;}
+.content .cz{margin:0px auto;width:1200px;height:1382px;background-color:white;margin-top:86px;}
+.content .cz .cb{margin-top:120px;margin-left:200px;}
+.content .cz .xl {margin-top:100px;}
+.content .cz .xl .xian{width:16px;height:1100px;background-color:#83d6d3;margin-left:60px;margin-top:-20px;}
+.content .cz .xr{margin-right:300px;}
+.content .cz .xr{margin-top:150px;}
+.content .cz .xr .x1_t{color:#333;}
+.content .cz .xr .x1_n{margin-left:40px;}
+.content .cz .xr .x1_n ul{list-style:none;}
+.content .cz .xr .x1_n ul li a{text-decoration: none;color:#666;margin-top:20px;}
+.content .cz .xr .x1_n ul li a:link {color:#666;}      /* 未访问链接*/ 
+.content .cz .xr .x1_n ul li a:hover {color:#36C63F;}  /* mouse over link */ 
+.content .cz .xr .x1_n ul li a:active {color:#0000FF;}  /* selected link */

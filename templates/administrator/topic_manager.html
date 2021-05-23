@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>练习题管理页</title>
+    <script src="../../static/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+    <script src="../../static/js/bootstrap.min.js"></script>
+    <script>
+
+        function get_all_topic(c) {
+            let url = "/admin/api/get_topic/?c=" + c;
+            $.ajax({
+                type: "GET",
+                url: url,
+                timeout: 5000,
+                success: function (msg) {
+                    console.log(msg);
+                    if (msg.data.code === '0') {
+                        alert('获取内容成功');
+                        console.log(msg.data.msg);
+                        show_all_topic(msg.data.msg)
+                    } else if (msg.data.code === '-1') {
+                        alert('获取内容失败，请重试');
+                        window.location.href = "/admin/login"
+                    } else if (msg.data.code === '-2') {
+                        alert('cookie问题，非法请求');
+                        window.location.reload();
+                    }
+                },
+                error: function (msg) {
+                    alert('网络超时')
+                }
+            })
+        }
+
+        function show_all_topic(data) {
+            let ele = document.getElementById('show_all_topic');
+            ele.innerText = '';
+            for (let i = 0; i < data.length; i++) {
+                console.log(data[i]);
+                let each_t = data[i];
+                let content = "<div class=\"panel-body\" style=\"max-width: 85%; display: block; margin: 20px auto 20px auto;\">\n" +
+                    "            <div class=\"panel panel-default\">\n" +
+                    "                <div class=\"panel-heading\" style=\"font-size: small\">\n" +
+                    "                    <div>【数据库索引号】：<span>" + each_t.id + "</span></div>\n" +
+                    "                    <button style=\"float: right\" type=\"button\" class=\"btn btn-danger\" id=\"delete_" + each_t.id + "\" onclick=\"delete_topic(this.id)\">删除该问答</button>\n" +
+                    "                </div>\n" +
+                    "                <div class=\"panel-body\">\n" +
+                    "                    <div>【题号】：<span>" + each_t.topic_id + "</span></div>\n" +
+                    "                    <div>【题目】：<span>" + each_t.topic + "</span></div>\n" +
+                    "                    <div>【 A 】：<span>" + each_t.option_A + "</span></div>\n" +
+                    "                    <div>【 B 】：<span>" + each_t.option_B + "</span></div>\n" +
+                    "                    <div>【 C 】：<span>" + each_t.option_C + "</span></div>\n" +
+                    "                    <div>【 D 】：<span>" + each_t.option_D + "</span></div>\n" +
+                    "                    <div>【正确答案】：<span>" + each_t.correct_answer + "</span></div>\n" +
+                    "                    <div>【详细解释】：<span>" + each_t.explain + "</span></div>\n" +
+                    "                    <div style=\"background-color: lightgrey; height: 1px; margin: 20px 0 20px 0;\"></div>\n" +
+                    "                    <label>修改【题 目】<input type=\"text\" id=\"tm_" + each_t.id + "\"/></label><br>\n" +
+                    "                    <label>修改【A选项】<input type=\"text\" id=\"ao_" + each_t.id + "\"/></label><br>\n" +
+                    "                    <label>修改【B选项】<input type=\"text\" id=\"bo_" + each_t.id + "\"/></label><br>\n" +
+                    "                    <label>修改【C选项】<input type=\"text\" id=\"co_" + each_t.id + "\"/></label><br>\n" +
+                    "                    <label>修改【D选项】<input type=\"text\" id=\"do_" + each_t.id + "\"/></label><br>\n" +
+                    "                    <label>修改【答 案】<input type=\"text\" id=\"an_" + each_t.id + "\"/></label><br>\n" +
+                    "                    <label>修改【解 释】<input type=\"text\" id=\"js_" + each_t.id + "\"/></label><br>\n" +
+                    "                    <button type=\"button\" class=\"btn btn-success\" id=\"update_" + each_t.id + "\" onclick=\"update_topic(this.id)\">确认更改</button><br>\n" +
+                    "                </div>\n" +
+                    "            </div>\n" +
+                    "        </div>";
+                ele.innerHTML += content;
+            }
+        }
+
+        function delete_topic(btn_id) {
+            console.log(btn_id);
+            let topic_id = btn_id.substring(7);
+            console.log('topic_id', topic_id);
+            $.ajax({
+                type: 'POST',
+                url: "/admin/api/delete_topic/",
+                data: {
+                    topic_id: topic_id
+                },
+                timeout: 5000,
+                success: function (msg) {
+                    console.log(msg);
+                    if (msg.data.code === '0') {
+                        alert('删除成功，刷新页面');
+                        // window.location.reload()
+                    } else if (msg.data.code === '-1') {
+                        alert('code: -1 删除失败');
+                    } else if (msg.data.code === '-2') {
+                        alert('code: -2 cookie问题，非法请求');
+                        window.location.reload();
+                    }
+                },
+                error: function (msg) {
+                    alert('网络错误')
+                }
+            })
+        }
+
+        function update_topic(btn_id) {
+            console.log(btn_id);
+            let topic_id = btn_id.substring(7);
+            let tm_ele = document.getElementById('tm_' + topic_id);
+            let ao_ele = document.getElementById('ao_' + topic_id);
+            let bo_ele = document.getElementById('bo_' + topic_id);
+            let co_ele = document.getElementById('co_' + topic_id);
+            let do_ele = document.getElementById('do_' + topic_id);
+            let an_ele = document.getElementById('an_' + topic_id);
+            let js_ele = document.getElementById('js_' + topic_id);
+            let tm_value = tm_ele.value;
+            let ao_value = ao_ele.value;
+            let bo_value = bo_ele.value;
+            let co_value = co_ele.value;
+            let do_value = do_ele.value;
+            let an_value = an_ele.value;
+            let js_value = js_ele.value;
+            if (tm_value !== '' && ao_value !== '' && bo_value !== '' && co_value !== '' && do_value !== '' && an_value !== '' && js_value !== '') {
+                console.log('hello');
+                $.ajax({
+                    type: 'POST',
+                    url: "/admin/api/update_topic/",
+                    data: {
+                        topic_id: topic_id,
+                        tm_value: tm_value,
+                        ao_value: ao_value,
+                        bo_value: bo_value,
+                        co_value: co_value,
+                        do_value: do_value,
+                        an_value: an_value,
+                        js_value: js_value
+                    },
+                    timeout: 5000,
+                    success: function (msg) {
+                        console.log(msg);
+                        if (msg.data.code === '0') {
+                            alert('更新成功');
+                        } else if (msg.data.code === '-1') {
+                            alert('更新失败');
+                        } else if (msg.data.code === '-2') {
+                            alert('非法请求');
+                            window.location.reload();
+                        }
+                    },
+                    error: function (msg) {
+                        alert('网络错误')
+                    }
+                })
+            } else {
+                alert('请填写完整')
+            }
+        }
+
+        $(document).ready(function () {
+            let selected_c = '1';
+            $("#c1").click(function () {
+                get_all_topic('1')
+            });
+            $("#c2").click(function () {
+                get_all_topic('2')
+            });
+            $("#c3").click(function () {
+                get_all_topic('3')
+            });
+            $("#c4").click(function () {
+                get_all_topic('4')
+            });
+            $("#c5").click(function () {
+                get_all_topic('5')
+            });
+            $("#c6").click(function () {
+                get_all_topic('6')
+            });
+        })
+    </script>
+</head>
+<body>
+
+<div style="max-width: 700px; display: block; margin: 0 auto 0 auto">
+    <div class="page-header">
+        <h1>练习题管理页</h1>
+        <h2><a href="/admin/qa_manager/">管理留言板</a></h2>
+        <h5><a href="/admin/exit_login/">退出登陆</a></h5>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading" style="text-align: center; font-size: larger;" id="input_box_title">练习题内容管理页</div>
+
+        <!-- 选择器，选择章节的 -->
+        <div style="text-align: center; margin: 20px auto 20px auto;">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    选择章节以加载内容 <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#" id="c1">章节1</a></li>
+                    <li><a href="#" id="c2">章节2</a></li>
+                    <li><a href="#" id="c3">章节3</a></li>
+                    <li><a href="#" id="c4">章节4</a></li>
+                    <li><a href="#" id="c5">章节5</a></li>
+                    <li><a href="#" id="c6">章节6</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background-color: lightgrey; height: 1px; margin: 30px 20px 30px 20px;"></div>
+
+        <!--  内容动态加载 -->
+        <div id="show_all_topic">
+
+            <h1 style="text-align: center">请先选择要管理的章节</h1>
+
+        </div>
+
+        <!-- <div class="panel-body" style="max-width: 85%; display: block; margin: 20px auto 20px auto;">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="font-size: small">
+                    <div>【编号】：<span>1</span></div>
+                    <button style="float: right" type="button" class="btn btn-danger" id="del_">删除该问答</button>
+                </div>
+                <div class="panel-body">
+                    <div>【题号】：<span>1.1</span></div>
+                    <div>【题目】：<span>什么是TCP协议？</span></div>
+                    <div>【 A 】：<span>一种传输协议</span></div>
+                    <div>【 B 】：<span>一种传输协议</span></div>
+                    <div>【 C 】：<span>一种传输协议</span></div>
+                    <div>【 D 】：<span>一种传输协议</span></div>
+                    <div>【正确答案】：<span>B</span></div>
+                    <div>【详细解释】：<span>因为TCP是一种牛逼的网络协议</span></div>
+                    <div style="background-color: lightgrey; height: 1px; margin: 20px 0 20px 0;"></div>
+                    <label>修改【题 目】<input type="text" id="tm_"/></label><br>
+                    <label>修改【A选项】<input type="text" id="ao_"/></label><br>
+                    <label>修改【B选项】<input type="text" id="bo_"/></label><br>
+                    <label>修改【C选项】<input type="text" id="co_"/></label><br>
+                    <label>修改【D选项】<input type="text" id="do_"/></label><br>
+                    <label>修改【答 案】<input type="text" id="an_"/></label><br>
+                    <label>修改【解 释】<input type="text" id="js_"/></label><br>
+                    <button type="button" class="btn btn-success" id="">确认更改</button><br>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="panel-footer" style="text-align: right">1551300301 吴金莲</div>
+    </div>
+</div>
+
+</body>
+</html>

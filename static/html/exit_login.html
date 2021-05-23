@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>退出登录</title>
+    <script src="../js/jquery.min.js"></script>
+    <script>
+
+        function tiaozhuan() {
+            $.ajax({
+                type: 'GET',
+                url: '/api/exit_login/',
+                timeout: 5000,
+                success: function (msg) {
+                    console.log(msg);
+                    if (msg.data.code === '0') {
+                        let ele = document.getElementById('content');
+                        ele.innerText = "已成功退出登录，2秒后跳转到登录页";
+                        setTimeout("window.location.href=\"/static/html/login.html\";", 2000);
+
+                    }
+                    else if (msg.data.code === '-1') {
+                        alert('登陆状态无效，请重新登陆');
+                        window.location.href = "/static/html/login.html"
+                    }
+                    else {
+                        alert('内部错误')
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body onload="tiaozhuan()">
+<h1 style="text-align: center" id="content">正在退出登录，请稍后...</h1>
+</body>
+</html>

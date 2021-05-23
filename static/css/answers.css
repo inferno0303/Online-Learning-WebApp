@@ -1,0 +1,11 @@
+@charset "utf-8";
+/* CSS Document */
+.content .cz{margin:0px auto;width:1200px;background-color:white;height:600px;}
+.content .cz .ct{margin-top:40px;color:#33a0b3;}
+.content .cz .cn{background-color:#ececec;margin-top:50px;}
+.content .cz .cn table{width:1200px;height:394px;}
+.content .cz .cn table td {text-align:center;border-bottom:1px solid #fafafa;}
+.content .cz .cn table td h2{color:#333;}
+.content .cz .cn table td .sy{margin-right:20px;}
+.content .cz .cn table td input{background-color:#3399cc;border:none;color:white;}
+.content .cz .cn table td .xy{margin-left:20px;}

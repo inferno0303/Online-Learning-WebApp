@@ -1,0 +1,18 @@
+@charset "utf-8";
+/* CSS Document */
+/* banner内容 */
+.content .banner img{width:100%;}
+.content .wt_bj{background-color:white;border:1px solid white;margin-top:-4px;}
+.content .wt{margin:0px auto;width:1200px;margin-top:40px;}
+.content .wt_bj .wt .wt_y{background-color:#EFF5FF;height:252px;margin-bottom:40px;}
+.content .wt_bj .wt .wt_y .clear{clear:both;}
+.content .wt_bj .wt .wt_y .wt_l{margin-left:60px;}
+.content .wt_bj .wt .wt_y .wt_l .Q1{margin-top:50px;font-size:20px;}
+.content .wt_bj .wt .wt_y .wt_l .wt_t{margin-top:10px;font-size:12px;}
+.content .wt_bj .wt .wt_y .wt_l .wt_hd{margin-top:32px;}
+.content .wt_bj .wt .wt_y .wt_r{margin-top:50px;}
+.content .wt_bj .wt .wt_y .wt_r .wt_jd{width:110px;height:44px;background-color:#4abcdb;border-radius: 25px 0px 0px 25px;color:white;margin-top:20px;}
+.content .wt_bj .wt .wt_y .wt_r .wt_jd span{padding-left:20px;boeder:1px solid red;}
+.content .wt_bj .wt .wt_y .wt_r .wt_sl{margin-top:100px;}
+.content .wt_bj .wt .wt_ac .ac_bn {margin-top:10px;}
+.content .wt_bj .wt .wt_ac .ac_bn>input{height:35px;color:white;background:-webkit-linear-gradient(top,#27b0f6 0%,#0aa1ed 100%);width:100%;border:none;border-radius:3px; }

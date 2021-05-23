@@ -1,0 +1,26 @@
+@charset "utf-8";
+/* CSS Document */
+body{backround-color:#f5f5f5;color:#666;}
+/**头部样式**/
+.b1{background-color:#1a8bc1;}
+header{width:1200px;height:80px;margin:0px auto;}
+header img{float:left;margin:20px 0px;border-right:1px solid #D8D8D8 ;}
+header .c1{float: left; margin:20px;dispaly:block;color:aliceblue;font-size:30px;}
+/**内容区域的样式**/
+.cbj{background-image: url(../images/pexels-photo-843266.jpg);background-repeat:no-repeat; background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-position: center 0;}
+.container{width:1200px;height:600px;margin:0px auto;}
+
+.container .form{width:600px;height:400px;background-color:rgba(0,0,0,0.4);padding: 10px;margin:120px;}
+.container .form h4{color:white; font-weight:normal;padding:10px 0px;}
+.container .form h4 a{color:white;font-size:12px;text-decoration: none;float:right;margin-top:7px;margin-right:190px;}
+.container .form .user_name{margin-top:20px;color:white;font-size:14px;}
+.container .form .user_name .clear{clear:both;}
+.container .form .user_name .user_font{width:80px;}
+.container .form .user_name .input{padding:5px;background-color:white;height:24px;width:300px;border-radius:3px;margin-top:-4px;}
+.container .form .user_name .input input{border:none;outline:none;margin-top:2px}
+.container .form .user_name .tip{margin-left:10px;color:red;}
+.container form .form .submit{cursor: pointer;blr:expression(this.hideFocus = true);}
+.container .form >input{margin-top:30px; height:35px;color:white;background:-webkit-linear-gradient(top,#27b0f6 0%,#0aa1ed 100%);width:100%;border:none;border-radius:3px;width:310px; margin-left:80px;}

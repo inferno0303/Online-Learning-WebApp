@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>同步、通信与死锁习题</title>
+    <link rel="stylesheet" type="text/css" href="../css/header.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/OS%20exercise.css">
+    <link rel="stylesheet" type="text/css" href="../css/footer.css">
+    <script src="../js/jquery.min.js"></script>
+    <script>
+        let global_data = undefined;
+
+        function get_question() {
+            $.ajax({
+                type: 'GET',
+                url: '/api/get_topic/?c=3',
+                timeout: 5000,
+                success: function (msg) {
+                    console.log(msg);
+                    if (msg.data.code === '0') {
+                        show_question(msg.data.msg)
+                    }
+                    else if (msg.data.code === '-1') {
+                        alert('登陆状态无效，请重新登陆');
+                        window.location.href = "/static/html/login.html"
+                    }
+                    else {
+                        alert('内部错误')
+                    }
+                }
+            })
+        }
+
+        function show_question(data) {
+            global_data = data;
+            let ele = document.getElementById('topic_area');
+            ele.innerText = "";
+            for (let i = 0; i < data.length; i++) {
+                let each_t = data[i];
+                let content = "<div class=\"other-1221-bd\">\n" +
+                    "                <div class=\"padding-100\">\n" +
+                    "                    <div class=\"hd\">\n" +
+                    "                        <span>【" + each_t.topic_id + "】</span>\n" +
+                    "                        <xmap><span>" + each_t.topic + "</span></xmap>\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"bd\">\n" +
+                    "                        <div class=\"form-checkbox\">\n" +
+                    "                            <label>\n" +
+                    "                                <input name=\"" + each_t.topic_id + "\" type=\"radio\" value=\"A\">A. " + each_t.option_A + "\n" +
+                    "                            </label>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"form-checkbox\">\n" +
+                    "                            <label>\n" +
+                    "                                <input name=\"" + each_t.topic_id + "\" type=\"radio\" value=\"B\">B. " + each_t.option_B + "\n" +
+                    "                            </label>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"form-checkbox\">\n" +
+                    "                            <label>\n" +
+                    "                                <input name=\"" + each_t.topic_id + "\" type=\"radio\" value=\"C\">C. " + each_t.option_C + "\n" +
+                    "                            </label>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"form-checkbox\">\n" +
+                    "                            <label>\n" +
+                    "                                <input name=\"" + each_t.topic_id + "\" type=\"radio\" value=\"D\">D. " + each_t.option_D + "\n" +
+                    "                            </label>\n" +
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                </div>\n" +
+                    "            </div>";
+                ele.innerHTML += content
+            }
+        }
+
+        function get_all_option(data) {
+            let options = [];
+            for (let i = 0; i < data.length; i++) {
+                let each_t = data[i];
+                let radios = document.getElementsByName(each_t.topic_id);
+                for (let i = 0; i < radios.length; i++) {
+                    if (radios[i].checked === true) {
+                        options.push({"topic_id": each_t.topic_id, "option": radios[i].value})
+                    }
+                }
+            }
+            return options
+        }
+
+        function submit_all_option(options) {
+            if (options.length !== global_data.length) {
+                alert('请答完所有的题目，还有' + (global_data.length - options.length).toString() + '道题目');
+                return false
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/api/submit_answer/',
+                data: {
+                    c: 3,
+                    options: JSON.stringify(options)
+                },
+                timeout: 5000,
+                success: function (msg) {
+                    if (msg.data.code === '0') {
+                        show_final_score(msg.data.msg)
+                    }
+                    else if (msg.data.code === '-1') {
+                        alert('登陆状态无效，请重新登陆');
+                        window.location.href = "/static/html/login.html"
+                    }
+                    else {
+                        alert('内部错误')
+                    }
+                }
+            })
+        }
+
+        function show_final_score(data) {
+            console.log(data);
+            let score = data.score;
+            let wrong_topic_id = data.wrong_topic_id;
+            console.log(score, wrong_topic_id);
+            let ele = document.getElementById('show_score');
+            ele.innerHTML = "<div style=\"font-size: larger; color: #b71c1c;\" href=\"/1_answer\">您的得分为：" + score +"分，错题为：" + wrong_topic_id.toString() + "</div>";
+            document.getElementById('submit_btn').remove();
+            let ele2 = document.getElementById('show_btn');
+            ele2.innerHTML = "<div class=\"fr\"><a class=\"form-btn form-btn-blue\">查看完整解析与答案</a></div>";
+        }
+
+        $(document).ready(function () {
+            // 得到题目
+            get_question();
+            // 获取每道题的答案
+            $("#submit_btn").click(function () {
+                let options = get_all_option(global_data);
+                submit_all_option(options)
+            });
+            $('#show_btn').click(function () {
+                window.location.href = "3_answer.html"
+            })
+        })
+    </script>
+</head>
+
+<body>
+<div class="header">
+    <header>
+        <div class="im fl">
+            <a href="javascript:">
+                <img src="../images/logo.png">
+            </a>
+        </div>
+        <div class="c1 fr">
+            <ul class="list_item">
+                <li><a href="index.html">学习中心</a></li>
+                <li><a href="Answers.html">在线习题</a></li>
+                <li><a href="Questionnaire.html">下载资源</a></li>
+                <li><a href="Answering%20questions%20online.html">在线答疑</a></li>
+                <li><a href="exit_login.html">退出登录</a></li>
+            </ul>
+        </div>
+
+    </header>
+</div>
+<div class="content">
+    <div class="cz">
+        <div class="ct">
+            <div class="fl"><h2>同步、通信与死锁习题</h2></div>
+            <div class="fr"><a class="form-btn form-btn-blue" id="submit_btn">交卷</a></div>
+            <div id="show_score"></div>
+            <div id="show_btn"></div>
+            <div class="clear"></div>
+        </div>
+        <div class="cn">
+            <div class="other-1221-hd">单选题<span class="s1">&#40;共计 10 题，总计 100分&#41;</span></div>
+            <div id="topic_area"><h1 style="text-align: center">正在加载中，请稍后...</h1></div>
+            <div style="padding-bottom: 100px"></div>
+        </div>
+        <div class="cn">
+            <div class="other-1221-hd">答案及解析</div>
+            <div id="answer_area" style="text-align: center; color: #b71c1c"><a href="3_answer.html">直接查看答案</a></div>
+            <div style="padding-bottom: 100px"></div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="footer-top"></div>
+    <div class="footer-bottom">
+        <div class="fj">
+            <p>学号：1551300301&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名：吴金莲</p>
+            <p>Copyright&nbsp;&nbsp;© 桂林电子科技大学信息科技学院信息工程系版权所有</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

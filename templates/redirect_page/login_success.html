@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>登录成功</title>
+    <script>
+        function tiaozhuan() {
+            console.log('hello');
+            setTimeout("window.location.href=\"/static/html/index.html\";",2000);
+        }
+    </script>
+</head>
+<body onload="tiaozhuan()">
+<h1 style="text-align: center">欢迎你：{{ username }}，2秒后进入首页...</h1>
+</body>
+</html>

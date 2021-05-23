@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>在线习题</title>
+    <link rel="stylesheet" type="text/css" href="../css/header.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/answers.css">
+    <link rel="stylesheet" type="text/css" href="../css/footer.css">
+    <script src="../js/jquery.min.js"></script>
+    <script>
+
+        function get_all_score() {
+            for (let i = 1; i <= 6; i++) {
+                let url = '/api/get_student_score/?c=' + i.toString();
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    timeout: 5000,
+                    success: function (msg) {
+                        if (msg.data.code === '0') {
+                            console.log(msg);
+                            let score = msg.data.msg.score;
+                            let ele = document.getElementById('t_' + i.toString() + '_score');
+                            ele.innerText = score;
+                            let ele2 = document.getElementById('t_' + i.toString() + '_status');
+                            if (score !== null) {
+                                ele2.innerText = '已做'
+                            } else {
+                                ele2.innerText = '未做'
+                            }
+                        }
+                        else if (msg.data.code === '-1') {
+                            alert('登陆状态无效，请重新登陆');
+                            window.location.href = "/static/html/login.html"
+                        }
+                        else {
+                            alert('内部错误');
+                            window.location.href = "/static/html/login.html"
+                        }
+                    },
+                })
+            }
+
+        }
+
+        $(document).ready(function () {
+            // 发起6个ajax请求，获取每章分数
+            get_all_score()
+        })
+    </script>
+</head>
+
+<body>
+<div class="header">
+    <header>
+        <div class="im fl">
+            <a href="#">
+                <img src="../images/logo.png">
+            </a>
+        </div>
+        <div class="c1 fr">
+            <ul class="list_item">
+                <li><a href="index.html">学习中心</a></li>
+                <li><a href="Answers.html">在线习题</a></li>
+                <li><a href="Questionnaire.html">下载资源</a></li>
+                <li><a href="Answering%20questions%20online.html">在线答疑</a></li>
+                <li><a href="exit_login.html">退出登录</a></li>
+            </ul>
+            </ul>
+        </div>
+
+    </header>
+    <div class="content">
+        <div class="cz">
+            <div class="ct"><h2>考试列表</h2></div>
+            <div class="cn">
+                <table align="center">
+                    <tr>
+                        <td><h2>序号</h2></td>
+                        <td><h2>考试名称</h2></td>
+                        <td><h2>状态</h2></td>
+                        <td><h2>总分</h2></td>
+                        <td><h2>得分</h2></td>
+                        <td><h2>操作</h2></td>
+                    </tr>
+                    <tr>
+                        <td><p>1</p></td>
+                        <td><p>操作系统概论习题</p></td>
+                        <td><p id="t_1_status">未做</p></td>
+                        <td><p>100</p></td>
+                        <td><p id="t_1_score">0</p></td>
+                        <td><p><span class="js"><a href="1OS%20exercise.html">开始</a></span></p></td>
+                    </tr>
+                    <tr>
+                        <td><p>2</p></td>
+                        <td><p>处理器管理习题</p></td>
+                        <td><p id="t_2_status">未做</p></td>
+                        <td><p>100</p></td>
+                        <td><p id="t_2_score">0</p></td>
+                        <td><p><span class="js"><a href="2PMexercise.html">开始</a></span></p></td>
+                    </tr>
+                    <tr>
+                        <td><p>3</p></td>
+                        <td><p>同步、通信与死锁习题</p></td>
+                        <td><p id="t_3_status">未做</p></td>
+                        <td><p>100</p></td>
+                        <td><p id="t_3_score">0</p></td>
+                        <td><p><span class="js"><a href="3SCDexercise.html">开始</a></span></p></td>
+                    </tr>
+                    <tr>
+                        <td><p>4</p></td>
+                        <td><p>存储管理习题</p></td>
+                        <td><p id="t_4_status">未做</p></td>
+                        <td><p>100</p></td>
+                        <td><p id="t_4_score">0</p></td>
+                        <td><p><span class="js"><a href="4SMexercise.html">开始</a></span></p></td>
+                    </tr>
+                    <tr>
+                        <td><p>5</p></td>
+                        <td><p>设备管理习题</p></td>
+                        <td><p id="t_5_status">未做</p></td>
+                        <td><p>100</p></td>
+                        <td><p id="t_5_score">0</p></td>
+                        <td><p><span class="js"><a href="5EMexercise.html">开始</a></span></p></td>
+                    </tr>
+                    <tr>
+                        <td><p>6</p></td>
+                        <td><p>文件管理习题</p></td>
+                        <td><p id="t_6_status">未做</p></td>
+                        <td><p>100</p></td>
+                        <td><p id="t_6_score">0</p></td>
+                        <td><p><span class="js"><a href="6DWexercise.html">开始</a></span></p></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <footer>
+        <div class="footer-top"></div>
+        <div class="footer-bottom">
+            <div class="fj">
+                <p>学号：1551300301&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名：吴金莲</p>
+                <p>Copyright&nbsp;&nbsp;© 桂林电子科技大学信息科技学院信息工程系版权所有</p>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
