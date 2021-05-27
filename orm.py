@@ -1,10 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
 
-# MySQL映射
+
 db = SQLAlchemy()
 
 
-# TODO 学生ORM
+# 学生
 class user(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.VARCHAR)
@@ -69,7 +69,7 @@ class student_info(db.Model):
         return '<ORM repr> (%s, %s, %s, %s)' % (self.id, self.student_id, self.chapter_1_score, self.chapter_2_score)
 
 
-# TODO 管理员ORM
+# 管理员
 class admin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.VARCHAR)
